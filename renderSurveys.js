@@ -1,29 +1,19 @@
 
 function renderSurveys(finalSurvey) {
-    var finalHtml=finalSurvey.map(function(currentFinalSurvey){
-        return renderSurvey(currentFinalSurvey);
-       
-       
+    var finalHtml=finalSurvey.map(function(survey){
+        
+    
 
 
-    });
-    return `<div class="container">
-            ${finalHtml.join('')}
-            </div>`
-}
-function renderSurvey(survey){
-    var surveyHtml=survey.fields.map(function(currentSurvey){
-        return renderField(currentSurvey);
-
-
-    });
+    
     return  `<div class="m-3">
                 <div >
-                    <h2 class="mb-1 mt-5">${survey.title}</h2>
+                    <h2 class="mb-1 mt-5"></h2>
                     <hr class="mt-1">
                 </div>
+                ${renderField(survey.fields)}
                 <div>
-                    ${surveyHtml.join('')} 
+                    
                 </div>
                 
 
@@ -31,34 +21,48 @@ function renderSurvey(survey){
                     <button type="button" class="btn btn-primary mt-4"> Submit Survey</button>
                 </div>
             </div>`
-
+});
+  return `<div>
+      ${finalHtml.join('')}
+  </div>`
 }
 
 
 
-function renderField(field){
+function renderField(fields){console.log(fields)
    
-  
-
-  
-    return `<div>
+   var fieldHTML= fields.map(function(field,radio){
+       if(field.type==="radio"){
+           return `<div>
                 <h4 class="mb-3 mt-3">${field.label} </h4>
-                    <div class="form-check">
-                        <input class="form-check-input poistion-static" type="Radio" > ${field.options}
-                    </div>
+                 ${field.options.map(function(option){
+                     return   `<div class="form-check">
+                        <input class="form-check-input poistion-static" type="radio"  name="radio${radio}"/> ${option}
+                    </div>`
+        }).join('')}
                     
-            </div>
+                    
+            </div>`
             
-            `
-            /*<div class="form-group">
-                         <label for="exampleFormControlTextArea1">example</label>
+            
+       } else if(field.type==="text"){
+            return `<div class="form-group">
+                         <label for="exampleFormControlTextArea1">${field.label}</label>
                         <textarea class="form-control" id="exampleFormControlTextArea1" rows="3"></textarea>
-                    </div>*/
+                    </div>`
 
 
 
+       }
+       
 
+  
+    
+            
 
+    });
+
+    return fieldHTML.join('');
     
 }
 function surveys() {
@@ -154,7 +158,7 @@ function renderSurvey(survey){
 
 
 function renderField(field){ console.log(`${field.options}`);
-    var fieldHtml = field.options.filter(function(currentField){
+    var fieldHtml = field.options.map(function(currentField){
         
         return renderOption(currentField);
         
